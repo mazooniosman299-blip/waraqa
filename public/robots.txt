@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://guileless-mooncake-864279.netlify.app/sitemap.xml
