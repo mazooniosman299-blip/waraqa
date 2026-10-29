@@ -17,6 +17,11 @@ for (const name of await readdir(root + 'dist')) {
   if (!/\.(html|xml|txt)$/.test(name)) continue;
   const path = root + 'dist/' + name;
   const text = await readFile(path, 'utf8');
+  // Prevent publishing a second AdSense account's publisher ID by mistake.
+  const ids = [...text.matchAll(/(?:ca-)?pub-(\d{16})/g)].map(match => match[1]);
+  if (ids.some(id => id !== '5086201923236113')) {
+    throw new Error('Build rejected: found an unauthorized AdSense publisher ID in ' + name);
+  }
   await writeFile(path, text.replaceAll('https://guileless-mooncake-864279.netlify.app', origin));
 }
 if (process.env.CF_PAGES_BRANCH && process.env.CF_PAGES_BRANCH !== 'main') {
