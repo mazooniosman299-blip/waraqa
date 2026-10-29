@@ -1,0 +1,9 @@
+# Legacy Netlify Waraqa deployments should consolidate onto Cloudflare Pages.
+# This file affects Netlify builds only; Cloudflare Pages uses scripts/build.mjs.
+# Configure both old Netlify projects to deploy this repository for the rules to become active.
+
+[[redirects]]
+  from = "/*"
+  to = "https://waraqa-tools-om.pages.dev/:splat"
+  status = 301
+  force = true
