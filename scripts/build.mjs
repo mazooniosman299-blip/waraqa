@@ -32,6 +32,6 @@ if (process.env.CF_PAGES_BRANCH && process.env.CF_PAGES_BRANCH !== 'main') {
 // Both Cloudflare projects deploy this repository; only the legacy host redirects.
 if (origin === 'https://waraqa-3ml.pages.dev') {
   await writeFile(root + 'dist/_redirects', '/* https://waraqa-tools-om.pages.dev/:splat 301\\n'.replace('\\n', '\n'));
-  await writeFile(root + 'dist/robots.txt', 'User-agent: *\\nDisallow: /\\n'.replaceAll('\\n', '\n'));
+  await writeFile(root + 'dist/robots.txt', 'User-agent: *\\nAllow: /\\n'.replaceAll('\\n', '\n'));
 }
 console.log('Built dist with canonical origin: ' + origin);
