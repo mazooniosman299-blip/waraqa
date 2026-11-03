@@ -38,7 +38,7 @@ if (origin === primary) {
 } else {
   const redirects = await read('_redirects');
   check(redirects.includes('/* ' + primary + '/:splat 301'), 'Missing permanent redirect to primary');
-  check(robots.includes('Disallow: /'), 'Secondary project must not be indexed');
+  check(robots.includes('Allow: /') && !robots.includes('Disallow: /'), 'Allow crawlers to follow mirror 301 redirects');
 }
 if (errors.length) {
   for (const e of errors) console.error('FAIL: ' + e);
