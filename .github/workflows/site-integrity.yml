@@ -1,0 +1,42 @@
+name: Waraqa publisher and SEO integrity
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'public/**'
+      - 'scripts/**'
+      - '.github/workflows/site-integrity.yml'
+  pull_request:
+    paths:
+      - 'public/**'
+      - 'scripts/**'
+      - '.github/workflows/site-integrity.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  static-site-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Lint scripts
+        run: |
+          node --check scripts/build.mjs
+          node --check scripts/audit-adsense-readiness.mjs
+      - name: Audit main Cloudflare Pages hostname
+        env:
+          SITE_URL: https://waraqa-tools-om.pages.dev
+          CF_PAGES_BRANCH: main
+        run: |
+          node scripts/build.mjs
+          node scripts/audit-adsense-readiness.mjs
+      - name: Audit old Cloudflare Pages mirror redirect
+        env:
+          SITE_URL: https://waraqa-3ml.pages.dev
+          CF_PAGES_BRANCH: main
+        run: |
+          node scripts/build.mjs
+          node scripts/audit-adsense-readiness.mjs
